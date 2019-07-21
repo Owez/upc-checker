@@ -1,1 +1,0 @@
-initSidebarItems({"struct":[["UPCCode","UPCCode is the frontend struct for the upc-checker module, allowing easy access with an i8 vector (known as `code`) and one straggler i8 check code (known as `check_code`)."]]});

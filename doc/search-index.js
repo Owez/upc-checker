@@ -1,5 +1,0 @@
-var N=null,E="",T="t",U="u",searchIndex={};
-var R=["result","upccode","UPCCode"];
-
-searchIndex["lib"]={"doc":E,"i":[[3,R[2],"lib","UPCCode is the frontend struct for the upc-checker module,…",N,N],[12,"code",E,E,0,N],[12,"check_digit",E,E,0,N],[11,"check_code",E,"Frontend function for checking with given `check_code` for…",0,[[["self"]],[["error"],[R[0],["bool","error"]],["bool"]]]],[11,"from",E,E,0,[[[T]],[T]]],[11,"into",E,E,0,[[],[U]]],[11,"to_owned",E,E,0,[[["self"]],[T]]],[11,"clone_into",E,E,0,[[[T],["self"]]]],[11,"try_from",E,E,0,[[[U]],[R[0]]]],[11,"try_into",E,E,0,[[],[R[0]]]],[11,"borrow_mut",E,E,0,[[["self"]],[T]]],[11,"borrow",E,E,0,[[["self"]],[T]]],[11,"type_id",E,E,0,[[["self"]],["typeid"]]],[11,"clone",E,E,0,[[["self"]],[R[1]]]],[11,"eq",E,E,0,[[["self"],[R[1]]],["bool"]]],[11,"ne",E,E,0,[[["self"],[R[1]]],["bool"]]],[11,"fmt",E,E,0,[[["self"],["formatter"]],[R[0]]]]],"p":[[3,R[2]]]};
-initSearch(searchIndex);addSearchOptions(searchIndex);

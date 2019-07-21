@@ -15,3 +15,8 @@ rust-nightly:
     - cargo build --verbose
     - cargo test --verbose
   allow_failure: true
+
+pages:
+  stage: deploy
+  script:
+  - cargo odc
