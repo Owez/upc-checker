@@ -16,6 +16,7 @@ use std::io::{Error, ErrorKind};
 /// let my_upc_code = UPCCode { my_code_vector, my_check_digit };
 /// println!("Is `code` valid?: {}", my_upc_code.check_code().unwrap());
 /// ```
+#[derive(Debug, PartialEq, Clone)]
 pub struct UPCCode {
     pub code: Vec<u8>,
     pub check_digit: u8,
