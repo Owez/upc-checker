@@ -18,8 +18,8 @@ use std::io::{Error, ErrorKind};
 /// ```
 #[derive(Debug, PartialEq, Clone)]
 pub struct UPCCode {
-    pub code: Vec<u8>,
-    pub check_digit: u8,
+    pub code: Vec<i8>,
+    pub check_digit: i8,
 }
 
 impl UPCCode {
@@ -64,9 +64,9 @@ impl UPCCode {
 
         for code in self.code.iter() {
             if code % 2 == 0 {
-                result.0 += code;
+                result.0 += *code as u8;
             } else {
-                result.1 += code;
+                result.1 += *code as u8;
             }
         }
 
@@ -120,6 +120,6 @@ impl UPCCode {
 ///     is_1_digit(should_be_invalid)
 /// )
 /// ```
-fn is_1_digit(num: u8) -> bool {
-    num > !9
+fn is_1_digit(num: i8) -> bool {
+    !(num < 0 || num > 9)
 }
