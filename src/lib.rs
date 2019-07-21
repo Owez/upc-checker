@@ -3,12 +3,12 @@ use std::io;
 /// UPCCode is the frontend struct for the upc-checker module, allowing easy
 /// access with an i8 vector (known as `code`) and one straggler i8 check
 /// code (known as `check_code`).
-/// 
+///
 /// **NOTE: An integer overflow will occur if the vector is too long. It is
 /// advisible to follow the standardized UPC-A, UPC-E or similar.**
 ///
 /// ## Examples
-/// 
+///
 /// ```rust
 /// my_code_vector: Vec<i8> = vec![3, 5, 7, 4]; // NOTE digits should be 0-9
 /// my_check_digit: i8 = 2; // NOTE check digit should be 0-9
@@ -27,7 +27,7 @@ impl UPCCode {
     /// instead of the -255 to 255 of an i8
     ///
     /// ## Examples
-    /// 
+    ///
     /// ```rust
     /// let is_valid_nums = &self.validate_nums();
     ///
@@ -55,7 +55,7 @@ impl UPCCode {
     /// i8 tuple `(even, odd)` respectivly
     ///
     /// ## Examples
-    /// 
+    ///
     /// ```rust
     /// let (even_nums, odd_nums) = &self.add_even_odd_total();
     /// println!("Even: {0}, Odd: {1}", even_nums, odd_nums);
@@ -77,12 +77,12 @@ impl UPCCode {
 
     /// Frontend function for checking with given `check_code` for the
     /// `UPCCode` structure.
-    /// 
+    ///
     /// Check wikipedia for the process of using a check digit for a UPC code
     /// [here](https://en.wikipedia.org/wiki/Check_digit#UPC).
     ///
     /// ## Examples
-    /// 
+    ///
     /// ```rust
     /// let my_struct = UPCCode {code: vec![3, 5, 7, 4], check_digit: 3};
     /// println!("Result: {}", my_struct.check_code().unwrap());
@@ -112,11 +112,11 @@ impl UPCCode {
 /// Checks if a given i8 is 1 character wide (0-9)
 ///
 /// ## Examples
-/// 
+///
 /// ```rust
 /// let digit_to_check: i8 = 9;
 /// let should_be_invalid: i8 = 102;
-/// 
+///
 /// println!(
 ///     "Is `digit_to_check` valid?: {}. Is `should_be_invalid` valid?: {}",
 ///     is_1_digit(digit_to_check),
@@ -124,5 +124,5 @@ impl UPCCode {
 /// )
 /// ```
 fn is_1_digit(num: u8) -> bool {
-    num >! 9
+    num > !9
 }
