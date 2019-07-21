@@ -1,5 +1,67 @@
 use std::io::{Error, ErrorKind};
 
+/// Testing module for the main UPCCode struct along with its helper funcs.
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    /// Checks that the helper function is_1_digit returns a bool of true if it
+    /// is 1-char long (0-9) and a false if it is any other number in the
+    /// allowed i8 memory space.
+    #[test]
+    fn check_is_1_digit() {
+        assert_eq!(true, is_1_digit(0));
+        assert_eq!(true, is_1_digit(9));
+        assert_eq!(false, is_1_digit(10));
+        assert_eq!(false, is_1_digit(-2));
+    }
+
+    /// Checks if you can properly make the UPCCode structure.
+    ///
+    /// **NOTE: This is an invalid check code and is only running to see if you
+    /// can properly create the structure with the given datatypes.**
+    #[test]
+    fn check_upc_code_struct_make() {
+        let my_code: Vec<i8> = vec![0, 3, 6, 7, 4, 3, 3, 4];
+        let my_check_digit: i8 = 9;
+
+        UPCCode {
+            code: my_code,
+            check_digit: my_check_digit,
+        };
+    }
+
+    /// Checks if an invalid code returns the right value when using the
+    /// UPCCode.check_code() method.
+    #[test]
+    fn check_upc_code_invalidcheck() {
+        let my_code: Vec<i8> = vec![0, 3, 6, 7, 4, 3, 3, 4];
+        let my_check_digit: i8 = 9;
+
+        let my_upc_code_struct = UPCCode {
+            code: my_code,
+            check_digit: my_check_digit,
+        };
+
+        assert_eq!(false, my_upc_code_struct.check_code().unwrap());
+    }
+
+    /// Checks if a valid code is returning the right value when using the
+    /// UPCCode.check_code() method.
+    #[test]
+    fn check_upc_code_validcheck() {
+        let my_code: Vec<i8> = vec![0, 3, 6, 0, 0, 0, 2, 4, 1, 4, 5];
+        let my_check_digit: i8 = 7;
+
+        let my_upc_code_struct = UPCCode {
+            code: my_code,
+            check_digit: my_check_digit,
+        };
+
+        assert_eq!(true, my_upc_code_struct.check_code().unwrap());
+    }
+}
+
 /// UPCCode is the frontend struct for the upc-checker module, allowing easy
 /// access with an i8 vector (known as `code`) and one straggler i8 check
 /// code (known as `check_code`).
@@ -13,7 +75,11 @@ use std::io::{Error, ErrorKind};
 /// my_code_vector: Vec<i8> = vec![3, 5, 7, 4]; // NOTE digits should be 0-9
 /// my_check_digit: i8 = 2; // NOTE check digit should be 0-9
 ///
-/// let my_upc_code = UPCCode { my_code_vector, my_check_digit };
+/// let my_upc_code = UPCCode {
+///     code: my_code_vector,
+///     check_digit: my_check_digit
+/// };
+/// 
 /// println!("Is `code` valid?: {}", my_upc_code.check_code().unwrap());
 /// ```
 #[derive(Debug, PartialEq, Clone)]
