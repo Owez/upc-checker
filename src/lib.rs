@@ -9,7 +9,7 @@ mod tests {
     /// is 1-char long (0-9) and a false if it is any other number in the
     /// allowed i8 memory space.
     #[test]
-    fn check_is_1_digit() {
+    fn is_1_digit_test() {
         assert_eq!(true, is_1_digit(0));
         assert_eq!(true, is_1_digit(9));
         assert_eq!(false, is_1_digit(10));
@@ -21,7 +21,7 @@ mod tests {
     /// **NOTE: This is an invalid check code and is only running to see if you
     /// can properly create the structure with the given datatypes.**
     #[test]
-    fn check_upc_code_struct_make() {
+    fn upc_code_struct_make() {
         let my_code: Vec<i8> = vec![0, 3, 6, 7, 4, 3, 3, 4];
         let my_check_digit: i8 = 9;
 
@@ -34,7 +34,7 @@ mod tests {
     /// Checks if an invalid code returns the right value when using the
     /// UPCCode.check_code() method.
     #[test]
-    fn check_upc_code_invalidcheck() {
+    fn upc_code_invalidcheck() {
         let my_code: Vec<i8> = vec![0, 3, 6, 7, 4, 3, 3, 4];
         let my_check_digit: i8 = 9;
 
@@ -49,7 +49,7 @@ mod tests {
     /// Checks if a valid code is returning the right value when using the
     /// UPCCode.check_code() method.
     #[test]
-    fn check_upc_code_validcheck() {
+    fn upc_code_validcheck() {
         let my_code: Vec<i8> = vec![0, 3, 6, 0, 0, 0, 2, 4, 1, 4, 5];
         let my_check_digit: i8 = 7;
 
@@ -59,6 +59,24 @@ mod tests {
         };
 
         assert_eq!(true, my_upc_code_struct.check_code().unwrap());
+    }
+
+    /// Checks that the UPCCode.check_code() method returns a Err() when given
+    /// an overflowing value (in this case any other number then 0-9).
+    #[test]
+    fn upc_code_overflow_error() -> Result<(), ()> {
+        let my_code: Vec<i8> = vec![0, 1, 2, 3, 56]; // 56 should be the error
+        let my_check_digit: i8 = 7; // Just random, it will fail anyway
+
+        let my_upc_code_struct = UPCCode {
+            code: my_code,
+            check_digit: my_check_digit,
+        };
+
+        match my_upc_code_struct.check_code() {
+            Err(_) => return Ok(()),
+            Ok(_) => return Err(()),
+        };
     }
 }
 
@@ -73,7 +91,7 @@ mod tests {
 ///
 /// ```rust
 /// extern crate upc_checker;
-/// 
+///
 /// let my_code_vector: Vec<i8> = vec![3, 5, 7, 4]; // NOTE digits should be 0-9
 /// let my_check_digit: i8 = 2; // NOTE check digit should be 0-9
 ///
@@ -81,7 +99,7 @@ mod tests {
 ///     code: my_code_vector,
 ///     check_digit: my_check_digit,
 /// };
-/// 
+///
 /// println!("Is `code` valid?: {}", my_upc_code.check_code().unwrap());
 /// ```
 #[derive(Debug, PartialEq, Clone)]
@@ -129,12 +147,12 @@ impl UPCCode {
     ///
     /// ```rust
     /// extern crate upc_checker;
-    /// 
+    ///
     /// let my_struct = upc_checker::UPCCode {
     ///     code: vec![3, 5, 7, 4],
     ///     check_digit: 3,
     /// };
-    /// 
+    ///
     /// println!("Result: {}", my_struct.check_code().unwrap());
     /// ```
     pub fn check_code(&self) -> Result<bool, Error> {
