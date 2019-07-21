@@ -1,4 +1,4 @@
-use std::io;
+use std::io::{Error, ErrorKind};
 
 /// UPCCode is the frontend struct for the upc-checker module, allowing easy
 /// access with an i8 vector (known as `code`) and one straggler i8 check
@@ -84,10 +84,10 @@ impl UPCCode {
     /// let my_struct = UPCCode {code: vec![3, 5, 7, 4], check_digit: 3};
     /// println!("Result: {}", my_struct.check_code().unwrap());
     /// ```
-    pub fn check_code(&self) -> Result<bool, io::Error> {
+    pub fn check_code(&self) -> Result<bool, Error> {
         if !&self.validate_nums() {
-            return Err(io::Error::new(
-                io::ErrorKind::Other,
+            return Err(Error::new(
+                ErrorKind::Other,
                 "A number used isn\'t 1 digit!",
             ));
         }
