@@ -50,7 +50,7 @@ impl UPCCode {
     }
 
     /// Adds odd and even numbers (using %) to a 2-len
-    /// i8 tuple `(even, odd)` respectivly
+    /// u8 tuple `(even, odd)` respectivly
     ///
     /// ## Examples
     ///
@@ -93,9 +93,9 @@ impl UPCCode {
         }
 
         let mut total: u16 = 0;
-        let (even_nums, odd_nums) = &self.add_even_odd_total();
+        let (even_nums, odd_nums) = self.add_even_odd_total();
 
-        total += ((*odd_nums as u16 * 3) + *even_nums as u16) % 10;
+        total += ((odd_nums as u16 * 3) + even_nums as u16) % 10;
 
         if (total == 0 && self.check_digit == 0) || (10 - total == self.check_digit as u16) {
             return Ok(true);
