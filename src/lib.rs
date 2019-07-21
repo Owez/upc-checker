@@ -110,6 +110,7 @@ impl UPCCode {
 /// ```rust
 /// let digit_to_check: i8 = 9;
 /// let should_be_invalid: i8 = 102;
+/// 
 /// println!(
 ///     "Is `digit_to_check` valid?: {}. Is `should_be_invalid` valid?: {}",
 ///     is_1_digit(digit_to_check),
