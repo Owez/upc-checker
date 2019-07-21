@@ -19,4 +19,15 @@ rust-nightly:
 pages:
   stage: deploy
   script:
-  - cargo odc
+  - cargo doc
+    # Remove libc from documentation to speed up deploy
+  - rm -r target/doc/libc
+  - rm -r target/doc/src/libc
+  - mkdir public
+  - mv targer/doc public
+  artifacts:
+    expire_in: 1 week
+    paths:
+      - public
+  only:
+    - master
