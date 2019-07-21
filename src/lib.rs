@@ -40,7 +40,7 @@ impl UPCCode {
     /// // Numbers are valid
     /// ```
     fn validate_nums(&self) -> bool {
-        for code in &self.code {
+        for code in self.code.iter() {
             if !is_1_digit(*code) {
                 return false;
             }
@@ -61,7 +61,7 @@ impl UPCCode {
     fn add_even_odd_total(&self) -> (u8, u8) {
         let mut result: (u8, u8) = (0, 0);
 
-        for code in &self.code {
+        for code in self.code.iter() {
             if code % 2 == 0 {
                 result.0 += code;
             } else {
@@ -85,7 +85,7 @@ impl UPCCode {
     /// println!("Result: {}", my_struct.check_code().unwrap());
     /// ```
     pub fn check_code(&self) -> Result<bool, Error> {
-        if !&self.validate_nums() {
+        if !self.validate_nums() {
             return Err(Error::new(
                 ErrorKind::Other,
                 "A number used isn\'t 1 digit!",
