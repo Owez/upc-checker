@@ -7,7 +7,7 @@ use std::io::{Error, ErrorKind};
 /// **NOTE: An integer overflow will occur if the vector is too long. It is
 /// advisible to follow the standardized UPC-A, UPC-E or similar.**
 ///
-/// ## Examples
+/// # Examples
 ///
 /// ```rust
 /// my_code_vector: Vec<i8> = vec![3, 5, 7, 4]; // NOTE digits should be 0-9
@@ -26,7 +26,7 @@ impl UPCCode {
     /// Validates that all data in the `UPCCode` is 1-char in len (0-9)
     /// instead of the -255 to 255 of an i8
     ///
-    /// ## Examples
+    /// # Examples
     ///
     /// ```rust
     /// let is_valid_nums = &self.validate_nums();
@@ -53,7 +53,7 @@ impl UPCCode {
     /// Adds odd and even numbers (using %) to a 2-len
     /// u8 tuple `(even, odd)` respectivly
     ///
-    /// ## Examples
+    /// # Examples
     ///
     /// ```rust
     /// let (even_nums, odd_nums) = &self.add_even_odd_total();
@@ -79,7 +79,7 @@ impl UPCCode {
     /// Check wikipedia for the process of using a check digit for a UPC code
     /// [here](https://en.wikipedia.org/wiki/Check_digit#UPC).
     ///
-    /// ## Examples
+    /// # Examples
     ///
     /// ```rust
     /// let my_struct = UPCCode {code: vec![3, 5, 7, 4], check_digit: 3};
@@ -108,7 +108,7 @@ impl UPCCode {
 
 /// Checks if a given i8 is 1 character wide (0-9)
 ///
-/// ## Examples
+/// # Examples
 ///
 /// ```rust
 /// let digit_to_check: i8 = 9;
