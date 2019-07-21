@@ -2,7 +2,10 @@ use std::io;
 
 /// UPCCode is the frontend struct for the upc-checker module, allowing easy
 /// access with an i8 vector (known as `code`) and one straggler i8 check
-/// code (known as `check_code`)
+/// code (known as `check_code`).
+/// 
+/// **NOTE: An integer overflow will occur if the vector is too long. It is
+/// advisible to follow the standardized UPC-A, UPC-E or similar.**
 ///
 /// ## Examples
 /// 
@@ -15,8 +18,8 @@ use std::io;
 /// ```
 #[allow(dead_code)]
 pub struct UPCCode {
-    pub code: Vec<i8>,
-    pub check_digit: i8,
+    pub code: Vec<u8>,
+    pub check_digit: u8,
 }
 
 impl UPCCode {
@@ -58,8 +61,8 @@ impl UPCCode {
     /// println!("Even: {0}, Odd: {1}", even_nums, odd_nums);
     /// ```
     #[allow(dead_code)]
-    fn add_even_odd_total(&self) -> (i8, i8) {
-        let mut result: (i8, i8) = (0, 0);
+    fn add_even_odd_total(&self) -> (u8, u8) {
+        let mut result: (u8, u8) = (0, 0);
 
         for code in &self.code {
             if code % 2 == 0 {
@@ -74,6 +77,9 @@ impl UPCCode {
 
     /// Frontend function for checking with given `check_code` for the
     /// `UPCCode` structure.
+    /// 
+    /// Check wikipedia for the process of using a check digit for a UPC code
+    /// [here](https://en.wikipedia.org/wiki/Check_digit#UPC).
     ///
     /// ## Examples
     /// 
@@ -90,12 +96,12 @@ impl UPCCode {
             ));
         }
 
-        let mut total: i8 = 0;
+        let mut total: u16 = 0;
         let (even_nums, odd_nums) = &self.add_even_odd_total();
 
-        total += ((odd_nums * 3) + even_nums) % 10;
+        total += ((*odd_nums as u16 * 3) + *even_nums as u16) % 10;
 
-        if (total == 0 && self.check_digit == 0) || (10 - total == self.check_digit) {
+        if (total == 0 && self.check_digit == 0) || (10 - total == self.check_digit as u16) {
             return Ok(true);
         }
 
@@ -117,6 +123,6 @@ impl UPCCode {
 ///     is_1_digit(should_be_invalid)
 /// )
 /// ```
-fn is_1_digit(num: i8) -> bool {
-    !(num < 0 || num > 9)
+fn is_1_digit(num: u8) -> bool {
+    num >! 9
 }
