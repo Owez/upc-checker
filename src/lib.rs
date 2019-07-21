@@ -16,7 +16,6 @@ use std::io;
 /// let my_upc_code = UPCCode { my_code_vector, my_check_digit };
 /// println!("Is `code` valid?: {}", my_upc_code.check_code().unwrap());
 /// ```
-#[allow(dead_code)]
 pub struct UPCCode {
     pub code: Vec<u8>,
     pub check_digit: u8,
@@ -40,7 +39,6 @@ impl UPCCode {
     ///
     /// // Numbers are valid
     /// ```
-    #[allow(dead_code)]
     fn validate_nums(&self) -> bool {
         for code in &self.code {
             if !is_1_digit(*code) {
@@ -60,7 +58,6 @@ impl UPCCode {
     /// let (even_nums, odd_nums) = &self.add_even_odd_total();
     /// println!("Even: {0}, Odd: {1}", even_nums, odd_nums);
     /// ```
-    #[allow(dead_code)]
     fn add_even_odd_total(&self) -> (u8, u8) {
         let mut result: (u8, u8) = (0, 0);
 
@@ -87,7 +84,6 @@ impl UPCCode {
     /// let my_struct = UPCCode {code: vec![3, 5, 7, 4], check_digit: 3};
     /// println!("Result: {}", my_struct.check_code().unwrap());
     /// ```
-    #[allow(dead_code)]
     pub fn check_code(&self) -> Result<bool, io::Error> {
         if !&self.validate_nums() {
             return Err(io::Error::new(
