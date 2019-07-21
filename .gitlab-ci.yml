@@ -23,7 +23,7 @@ pages:
   script:
   - cargo doc
   - mkdir public
-  - mv targer/doc public
+  - mv target/doc public
   artifacts:
     expire_in: 1 week
     paths:
