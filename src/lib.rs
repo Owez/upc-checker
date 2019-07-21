@@ -72,10 +72,12 @@ mod tests {
 /// # Examples
 ///
 /// ```rust
-/// my_code_vector: Vec<i8> = vec![3, 5, 7, 4]; // NOTE digits should be 0-9
-/// my_check_digit: i8 = 2; // NOTE check digit should be 0-9
+/// extern crate upc_checker;
+/// 
+/// let my_code_vector: Vec<i8> = vec![3, 5, 7, 4]; // NOTE digits should be 0-9
+/// let my_check_digit: i8 = 2; // NOTE check digit should be 0-9
 ///
-/// let my_upc_code = UPCCode {
+/// let my_upc_code = upc_checker::UPCCode {
 ///     code: my_code_vector,
 ///     check_digit: my_check_digit,
 /// };
@@ -126,9 +128,9 @@ impl UPCCode {
     /// # Examples
     ///
     /// ```rust
-    /// extern crate upc_check;
+    /// extern crate upc_checker;
     /// 
-    /// let my_struct = upc_check::UPCCode {
+    /// let my_struct = upc_checker::UPCCode {
     ///     code: vec![3, 5, 7, 4],
     ///     check_digit: 3,
     /// };
