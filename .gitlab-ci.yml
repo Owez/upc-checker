@@ -2,7 +2,7 @@ image: rust:latest
 
 stages:
   - build
-  - deploy
+  - cov
 
 rust-latest:
   stage: build
@@ -17,3 +17,20 @@ rust-nightly:
     - cargo build --verbose
     - cargo test --verbose
   allow_failure: true
+
+code-cov:
+  stage: cov
+  script:
+  - apt-get install libcurl4-openssl-dev libelf-dev libdw-dev cmake gcc
+  - wget https://github.com/SimonKagstrom/kcov/archive/master.tar.gz
+  - tar xzf master.tar.gz
+  - cd kcov-master
+  - mkdir build
+  - cd build
+  - cmake ..
+  - make
+  - sudo make install
+  - cargo test --no-run
+  - kcov target/cov target/debug/upc-checker-*
+  only:
+  - master
