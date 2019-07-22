@@ -17,16 +17,3 @@ rust-nightly:
     - cargo build --verbose
     - cargo test --verbose
   allow_failure: true
-
-pages:
-  stage: deploy
-  script:
-  - cargo doc
-  - mkdir public
-  - mv target/doc public
-  artifacts:
-    expire_in: 1 week
-    paths:
-      - public
-  only:
-    - master
