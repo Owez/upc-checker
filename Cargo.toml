@@ -1,7 +1,7 @@
 [package]
 name = "upc-checker"
 description = "A Rust Crate for calculating a UPC code using a check digit."
-version = "0.1.1"
+version = "0.1.2"
 authors = ["scOwez"]
 keywords = ["upc", "barcode", "checkdigit"]
 license = "MIT"
