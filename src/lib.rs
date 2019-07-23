@@ -1,4 +1,28 @@
-use std::io::{Error, ErrorKind};
+#![no_std]
+
+/// The error enum for the upc-checker crate.
+/// 
+/// # Error Types
+/// 
+/// - `IntOverflow`: When a given int inside the `UPCCode` struct is
+/// above/below 0-9 (larger than 1 chat)
+#[derive(Debug)]
+pub enum UPCCodeError {
+    IntOverflow,
+}
+
+/// The type enum for UPCCode. You can currently use the following standards
+/// listed below:
+/// 
+/// # UPC Code Types
+/// 
+/// - [UPC-A](https://en.wikipedia.org/wiki/Universal_Product_Code#Encoding)
+/// - [UPC-E](https://en.wikipedia.org/wiki/Universal_Product_Code#UPC-E)
+#[derive(Debug, PartialEq, Clone)]
+pub enum UPCCodeType {
+    UPCA([i8; 12]),
+    UPCE([i8; 8]),
+}
 
 /// UPCCode is the frontend struct for the upc-checker module, allowing easy
 /// access with an i8 vector (known as `code`) and one straggler i8 check
@@ -20,11 +44,16 @@ use std::io::{Error, ErrorKind};
 ///     check_digit: my_check_digit,
 /// };
 ///
-/// println!("Is `code` valid?: {}", my_upc_code.check_code().unwrap());
+/// match my_upc_code.check_code() {
+///     Ok(x) => println!("Is the code valid?: {}", x),
+///     Err(upc_checker::UPCCodeError::IntOverflow) => {
+///         println!("Integer overflow! Please use only 0-9!");
+///     }
+/// };
 /// ```
 #[derive(Debug, PartialEq, Clone)]
 pub struct UPCCode {
-    pub code: Vec<i8>,
+    pub code: UPCCodeType,
     pub check_digit: i8,
 }
 
@@ -75,12 +104,9 @@ impl UPCCode {
     ///
     /// println!("Result: {}", my_struct.check_code().unwrap());
     /// ```
-    pub fn check_code(&self) -> Result<bool, Error> {
+    pub fn check_code(&self) -> Result<bool, UPCCodeError> {
         if !self.validate_nums() {
-            return Err(Error::new(
-                ErrorKind::Other,
-                "A number used isn\'t 1 digit!",
-            ));
+            return Err(UPCCodeError::IntOverflow);
         }
 
         let mut total: u16 = 0;
