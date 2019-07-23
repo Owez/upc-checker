@@ -12,7 +12,7 @@
 /// (1 digit)
 /// - CheckDigitOverflow: When the i8 `check_digit` value implamented in the
 /// `UPC` has been overflown with data that is not 0-9 (1 digit)
-#[derive(Debug)]
+#[derive(Debug, PartialEq, Clone)]
 pub enum UPCError {
     UPCOverflow,
     CheckDigitOverflow,
