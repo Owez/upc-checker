@@ -1,43 +1,43 @@
 #![no_std]
 
-/// Error enum for the UPCCodes. This is responsable for the Error return on
-/// the `Result<T, E>` E (error) on the `UPCCode.check_upc()` method and
+/// Error enum for the UPCs. This is responsable for the Error return on
+/// the `Result<T, E>` E (error) on the `UPC.check_upc()` method and
 /// commonly implaments errors when users use standards implamented by the
-/// `UPCCodeStandard` wrongly.
+/// `UPCStandard` wrongly.
 ///
 /// # Error Types
 ///
-/// - UPCCodeOverflow: When the i8 array implamented in the standards defined
-/// by the `UPCCodeStandard` enum has been overflown with data that is not 0-9
+/// - UPCOverflow: When the i8 array implamented in the standards defined
+/// by the `UPCStandard` enum has been overflown with data that is not 0-9
 /// (1 digit)
 /// - CheckDigitOverflow: When the i8 `check_digit` value implamented in the
-/// `UPCCode` has been overflown with data that is not 0-9 (1 digit)
-pub enum UPCCodeError {
-    UPCCodeOverflow,
+/// `UPC` has been overflown with data that is not 0-9 (1 digit)
+pub enum UPCError {
+    UPCOverflow,
     CheckDigitOverflow,
 }
 
 /// The impamentations on the widely-used UPC code standards as simple i8
 /// arrays with a defined length. These arrays should **only** have ints that
-/// are 0-9 (1 digit) otherwise `UPCCode.upc_check()` will throw an error
-/// defined as `UPCCodeError::UPCCodeOverflow`.
+/// are 0-9 (1 digit) otherwise `UPC.upc_check()` will throw an error
+/// defined as `UPCError::UPCOverflow`.
 ///
 /// # Standards implamented
 ///
 /// - [UPC-A](https://en.wikipedia.org/wiki/Universal_Product_Code#Encoding)
 /// - [UPC-E](https://en.wikipedia.org/wiki/Universal_Product_Code#UPC-E)
 #[derive(Debug, PartialEq, Clone)]
-pub enum UPCCodeStandard {
+pub enum UPCStandard {
     UPCA([i8; 12]),
     UPCE([i8; 8]),
 }
 
-/// Main UPCCode structure containing the base UPC code alonside it's
+/// Main UPC structure containing the base UPC code alonside it's
 /// check digit. This is the core of the `upc_checker` library
 ///
 /// # Params
 ///
-/// - upc: A `UPCCodeStandard` enum
+/// - upc: A `UPCStandard` enum
 /// - check_digit: An i8 int for the UPC code's check digit
 ///
 /// # Examples
@@ -48,41 +48,41 @@ pub enum UPCCodeStandard {
 /// ```rust
 /// extern crate upc_checker;
 ///
-/// let my_code_vector = upc_checker::UPCCodeStandard::UPCE(
+/// let my_code_vector = upc_checker::UPCStandard::UPCE(
 ///     [0, 1, 2, 3, 4, 5, 6, 7]
 /// ); // NOTE digits should be 0-9.
 /// let my_check_digit: i8 = 2; // NOTE check digit should be 0-9
 ///
-/// let my_upc_code = upc_checker::UPCCode {
+/// let my_upc_code = upc_checker::UPC {
 ///     upc: my_code_vector,
 ///     check_digit: my_check_digit,
 /// };
 ///
 /// match my_upc_code.check_upc() {
 ///     Ok(x) => println!("Is the code valid?: {}", x),
-///     Err(upc_checker::UPCCodeError::UPCCodeOverflow) => {
+///     Err(upc_checker::UPCError::UPCOverflow) => {
 ///         println!("UPC code overflow! Please use only 0-9!");
 ///     },
-///     Err(upc_checker::UPCCodeError::CheckDigitOverflow) => {
+///     Err(upc_checker::UPCError::CheckDigitOverflow) => {
 ///         println!("UPC check digit overflow! Please use only 0-9!");
 ///     },
 /// };
 /// ```
 #[derive(Debug, PartialEq, Clone)]
-pub struct UPCCode {
-    pub upc: UPCCodeStandard,
+pub struct UPC {
+    pub upc: UPCStandard,
     pub check_digit: i8,
 }
 
-impl UPCCode {
-    /// The main frontend method for the `UPCCode` structure. This method uses
-    /// data from the super `UPCCode` struct and returns a Result enum with
+impl UPC {
+    /// The main frontend method for the `UPC` structure. This method uses
+    /// data from the super `UPC` struct and returns a Result enum with
     /// either a `bool` (IF the check digit is valid) or an instance of the
-    /// `UPCCodeError` enum.
+    /// `UPCError` enum.
     ///
-    /// **NOTE: For more documentation & examples, please view the `UPCCode`
+    /// **NOTE: For more documentation & examples, please view the `UPC`
     /// documentation directly.**
-    pub fn check_upc(&self) -> Result<bool, UPCCodeError> {
+    pub fn check_upc(&self) -> Result<bool, UPCError> {
         match self.validate_upc_overflow() {
             Err(x) => return Err(x),
             Ok(_) => (),
@@ -98,31 +98,31 @@ impl UPCCode {
         Ok(false)
     }
 
-    /// Converts any defined standards given in `UPCCodeStandard` to an i8
+    /// Converts any defined standards given in `UPCStandard` to an i8
     /// slice and returns it.
     ///
     /// **TODO: Make this automatically implament new standard from the
     /// afformentioned enum instead of matching all values.**
     fn get_upc_slice(&self) -> &[i8] {
         match &self.upc {
-            UPCCodeStandard::UPCA(x) => &x[..],
-            UPCCodeStandard::UPCE(x) => &x[..],
+            UPCStandard::UPCA(x) => &x[..],
+            UPCStandard::UPCE(x) => &x[..],
         }
     }
 
-    /// Validates that there has been no overflow of the `UPCCode` structure
+    /// Validates that there has been no overflow of the `UPC` structure
     /// by hooking onto the `is_1_digit` helper function. This is the main
-    /// source of the uses of `UPCCodeError`.
-    fn validate_upc_overflow(&self) -> Result<(), UPCCodeError> {
+    /// source of the uses of `UPCError`.
+    fn validate_upc_overflow(&self) -> Result<(), UPCError> {
         for upc_code in self.get_upc_slice() {
             if !is_1_digit(*upc_code) {
-                return Err(UPCCodeError::UPCCodeOverflow);
+                return Err(UPCError::UPCOverflow);
             }
         }
 
         match is_1_digit(self.check_digit) {
             true => Ok(()),
-            false => Err(UPCCodeError::CheckDigitOverflow),
+            false => Err(UPCError::CheckDigitOverflow),
         }
     }
 
