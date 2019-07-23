@@ -61,12 +61,10 @@ impl UPCCode {
     /// Validates that all data in the `UPCCode` is 1-char in len (0-9)
     /// instead of the -255 to 255 of an i8
     fn validate_nums(&self) -> bool {
-        let is_code_valid = !self.check_slice_validity(
-            match &self.code {
-                UPCCodeType::UPCA(x) => &x[..],
-                UPCCodeType::UPCE(x) => &x[..]
-            }
-        );
+        let is_code_valid = !self.check_slice_validity(match &self.code {
+            UPCCodeType::UPCA(x) => &x[..],
+            UPCCodeType::UPCE(x) => &x[..],
+        });
 
         if !is_code_valid {
             return false;
@@ -126,12 +124,10 @@ impl UPCCode {
         }
 
         let mut total: u16 = 0;
-        let (even_nums, odd_nums) = self.mod_check_slice(
-            match &self.code {
-                UPCCodeType::UPCA(x) => &x[..],
-                UPCCodeType::UPCE(x) => &x[..]
-            }
-        );
+        let (even_nums, odd_nums) = self.mod_check_slice(match &self.code {
+            UPCCodeType::UPCA(x) => &x[..],
+            UPCCodeType::UPCE(x) => &x[..],
+        });
 
         total += ((odd_nums as u16 * 3) + even_nums as u16) % 10;
 
