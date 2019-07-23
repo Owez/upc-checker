@@ -30,7 +30,6 @@ pub enum UPCError {
 #[derive(Debug, PartialEq, Clone)]
 pub enum UPCStandard {
     UPCA([i8; 11]),
-    UPCE([i8; 7]),
 }
 
 /// Main UPC structure containing the base UPC code alonside it's
@@ -108,7 +107,6 @@ impl UPC {
     fn get_upc_slice(&self) -> &[i8] {
         match &self.upc {
             UPCStandard::UPCA(x) => &x[..],
-            UPCStandard::UPCE(x) => &x[..],
         }
     }
 
