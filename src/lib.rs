@@ -61,7 +61,7 @@ impl UPCCode {
     /// Validates that all data in the `UPCCode` is 1-char in len (0-9)
     /// instead of the -255 to 255 of an i8
     fn validate_nums(&self) -> bool {
-        for code in self.code.iter() {
+        for code in self.code {
             if !is_1_digit(*code) {
                 return false;
             }
@@ -75,7 +75,7 @@ impl UPCCode {
     fn add_even_odd_total(&self) -> (u8, u8) {
         let mut result: (u8, u8) = (0, 0);
 
-        for code in self.code.iter() {
+        for code in self.code {
             if code % 2 == 0 {
                 result.0 += *code as u8;
             } else {
