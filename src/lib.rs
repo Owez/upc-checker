@@ -229,7 +229,7 @@ mod tests {
     /// Checks that the UPCCode.check_code() method returns a Err() when given
     /// an overflowing value (in this case any other number then 0-9).
     #[test]
-    fn upc_code_overflow_error() -> Result<(), ()> {
+    fn upc_code_overflow_error() -> Result<(), &'static str> {
         let my_code = UPCCodeType::UPCE([0, 3, 6, 7, 4, 30, 3, 4]); // 30 should error
         let my_check_digit: i8 = 7; // Just random, it will fail anyway
 
@@ -239,8 +239,9 @@ mod tests {
         };
 
         match my_upc_code_struct.check_code() {
-            Err(_) => return Ok(()),
-            Ok(_) => return Err(()),
+            Err(UPCCodeError::IntOverflow) => return Ok(()),
+            Ok(false) => return Err("Returning Ok(false)!"),
+            Ok(true) => return Err("Returning Ok(true)!"),
         };
     }
 }
