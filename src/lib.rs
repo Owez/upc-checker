@@ -61,17 +61,15 @@ impl UPCCode {
     /// Validates that all data in the `UPCCode` is 1-char in len (0-9)
     /// instead of the -255 to 255 of an i8
     fn validate_nums(&self) -> bool {
-        match self.code {
-            UPCCodeType::UPCA(x) => {
-                if !self.check_slice_validity(&x[..]) {
-                    return false;
-                }
+        let is_code_valid = !self.check_slice_validity(
+            match &self.code {
+                UPCCodeType::UPCA(x) => &x[..],
+                UPCCodeType::UPCE(x) => &x[..]
             }
-            UPCCodeType::UPCE(x) => {
-                if !self.check_slice_validity(&x[..]) {
-                    return false;
-                }
-            }
+        );
+
+        if !is_code_valid {
+            return false;
         }
 
         is_1_digit(self.check_digit)
@@ -104,17 +102,6 @@ impl UPCCode {
         result
     }
 
-    /// Frontend function for `self.mod_check_slice()`. Matches enums and
-    /// preforms calculations using said function.UPCCodeType
-    ///
-    /// Returns a `(even: u8, odd: u8)` tuple.
-    fn add_even_odd_total(&self) -> (u8, u8) {
-        match self.code {
-            UPCCodeType::UPCA(x) => return self.mod_check_slice(&x[..]),
-            UPCCodeType::UPCE(x) => return self.mod_check_slice(&x[..]),
-        }
-    }
-
     /// Frontend function for checking with given `check_code` for the
     /// `UPCCode` structure.
     ///
@@ -139,7 +126,12 @@ impl UPCCode {
         }
 
         let mut total: u16 = 0;
-        let (even_nums, odd_nums) = self.add_even_odd_total();
+        let (even_nums, odd_nums) = self.mod_check_slice(
+            match &self.code {
+                UPCCodeType::UPCA(x) => &x[..],
+                UPCCodeType::UPCE(x) => &x[..]
+            }
+        );
 
         total += ((odd_nums as u16 * 3) + even_nums as u16) % 10;
 
