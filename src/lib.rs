@@ -146,5 +146,5 @@ impl UPC {
 
 /// Checks if a given i8 is 1 digit/character (0-9) wide
 fn is_1_digit(digit: i8) -> bool {
-    digit > 0 && digit < 9
+    !(digit < 0 || digit > 9)
 }
