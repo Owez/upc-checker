@@ -1,9 +1,9 @@
 #![no_std]
 
 /// The error enum for the upc-checker crate.
-/// 
+///
 /// # Error Types
-/// 
+///
 /// - `IntOverflow`: When a given int inside the `UPCCode` struct is
 /// above/below 0-9 (larger than 1 chat)
 #[derive(Debug)]
@@ -13,9 +13,9 @@ pub enum UPCCodeError {
 
 /// The type enum for UPCCode. You can currently use the following standards
 /// listed below:
-/// 
+///
 /// # UPC Code Types
-/// 
+///
 /// - [UPC-A](https://en.wikipedia.org/wiki/Universal_Product_Code#Encoding)
 /// - [UPC-E](https://en.wikipedia.org/wiki/Universal_Product_Code#UPC-E)
 #[derive(Debug, PartialEq, Clone)]
@@ -66,12 +66,12 @@ impl UPCCode {
                 if !self.check_slice_validity(&x[..]) {
                     return false;
                 }
-            },
+            }
             UPCCodeType::UPCE(x) => {
                 if !self.check_slice_validity(&x[..]) {
                     return false;
                 }
-            },
+            }
         }
 
         is_1_digit(self.check_digit)
@@ -93,7 +93,6 @@ impl UPCCode {
     /// u8 tuple `(even, odd)` respectivly
     fn mod_check_slice(&self, codes: &[i8]) -> (u8, u8) {
         let mut result: (u8, u8) = (0, 0);
-        
         for code in codes {
             if code % 2 == 0 {
                 result.0 += *code as u8;
@@ -107,7 +106,7 @@ impl UPCCode {
 
     /// Frontend function for `self.mod_check_slice()`. Matches enums and
     /// preforms calculations using said function.UPCCodeType
-    /// 
+    ///
     /// Returns a `(even: u8, odd: u8)` tuple.
     fn add_even_odd_total(&self) -> (u8, u8) {
         match self.code {
@@ -207,7 +206,7 @@ mod tests {
 
     /// Checks if an invalid code returns the right value when using the
     /// UPCCode.check_code() method.
-    /// 
+    ///
     /// **NOTE: Will be using an invalid UPC-E code for this test.**
     #[test]
     fn upc_code_invalidcheck() {
@@ -224,7 +223,7 @@ mod tests {
 
     /// Checks if a valid code is returning the right value when using the
     /// UPCCode.check_code() method.
-    /// 
+    ///
     /// **NOTE: This test is essentially an extention of the UPC-E test**
     #[test]
     fn upc_code_validcheck() {
