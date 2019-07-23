@@ -33,14 +33,14 @@ impl UPCCode {
             false => Err(UPCCodeError::CheckDigitOverflow),
         }
     }
-    fn split_upc_even_odd(&self) -> (u8, u8) {
-        let mut even_odd: (u8, u8) = (0, 0);
+    fn split_upc_even_odd(&self) -> (u16, u16) {
+        let mut even_odd: (u16, u16) = (0, 0);
 
         for upc_code in self.get_upc_slice() {
             if upc_code % 2 == 0 {
-                even_odd.0 += *upc_code as u8;
+                even_odd.0 += *upc_code as u16;
             } else {
-                even_odd.1 += *upc_code as u8;
+                even_odd.1 += *upc_code as u16;
             }
         }
 
@@ -53,10 +53,12 @@ impl UPCCode {
             Ok(_) => (),
         };
 
-        let total: u16 = 0;
-        let even_odd_split = self.split_upc_even_odd();
+        let (even_nums, odd_nums) = self.split_upc_even_odd();
+        let total: u16 = ((odd_nums * 3) + even_nums) % 10;
 
-        // TODO more
+        if (total == 0 && self.check_digit == 0) || (10 - total == self.check_digit as u16) {
+            return Ok(true);
+        }
 
         Ok(false)
     }
