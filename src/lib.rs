@@ -66,8 +66,8 @@ impl UPCCode {
             UPCCodeType::UPCE(x) => &x[..],
         });
 
-        if !is_code_valid {
-            return false;
+        if is_code_valid {
+            return true;
         }
 
         is_1_digit(self.check_digit)
@@ -78,11 +78,11 @@ impl UPCCode {
     fn check_slice_validity(&self, given_slice: &[i8]) -> bool {
         for code in given_slice {
             if !is_1_digit(*code) {
-                return false;
+                return true;
             }
         }
 
-        true
+        false
     }
 
     /// Adds odd and even numbers (using %) to a 2-len
