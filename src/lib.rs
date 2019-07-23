@@ -14,6 +14,22 @@ pub struct UPCCode {
 }
 
 impl UPCCode {
+    pub fn check_upc(&self) -> Result<bool, UPCCodeError> {
+        match self.validate_upc_overflow() {
+            Err(x) => return Err(x),
+            Ok(_) => (),
+        };
+
+        let (even_nums, odd_nums) = self.split_upc_even_odd();
+        let total: u16 = ((odd_nums * 3) + even_nums) % 10;
+
+        if (total == 0 && self.check_digit == 0) || (10 - total == self.check_digit as u16) {
+            return Ok(true);
+        }
+
+        Ok(false)
+    }
+    
     fn get_upc_slice(&self) -> &[i8] {
         match &self.upc {
             UPCCodeStandard::UPCA(x) => &x[..],
@@ -45,22 +61,6 @@ impl UPCCode {
         }
 
         even_odd
-    }
-
-    pub fn check_upc(&self) -> Result<bool, UPCCodeError> {
-        match self.validate_upc_overflow() {
-            Err(x) => return Err(x),
-            Ok(_) => (),
-        };
-
-        let (even_nums, odd_nums) = self.split_upc_even_odd();
-        let total: u16 = ((odd_nums * 3) + even_nums) % 10;
-
-        if (total == 0 && self.check_digit == 0) || (10 - total == self.check_digit as u16) {
-            return Ok(true);
-        }
-
-        Ok(false)
     }
 }
 
