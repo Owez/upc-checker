@@ -143,13 +143,30 @@ mod tests {
         assert_eq!(false, is_1_digit(-2));
     }
 
-    /// Checks if you can properly make the UPCCode structure.
+    /// Checks if you can properly make the UPCCode structure with the
+    /// **UPC-E** type.
     ///
     /// **NOTE: This is an invalid check code and is only running to see if you
     /// can properly create the structure with the given datatypes.**
     #[test]
-    fn upc_code_struct_make() {
-        let my_code: Vec<i8> = vec![0, 3, 6, 7, 4, 3, 3, 4];
+    fn upc_code_struct_upce_make() {
+        let my_code = UPCCodeType::UPCE([0, 3, 6, 7, 4, 3, 3, 4]);
+        let my_check_digit: i8 = 9;
+
+        UPCCode {
+            code: my_code,
+            check_digit: my_check_digit,
+        };
+    }
+
+    /// Checks if you can properly make the UPCCode structure with the
+    /// **UPC-A** type.
+    ///
+    /// **NOTE: This is an invalid check code and is only running to see if you
+    /// can properly create the structure with the given datatypes.**
+    #[test]
+    fn upc_code_struct_upca_make() {
+        let my_code = UPCCodeType::UPCA([0, 3, 6, 7, 4, 3, 3, 4, 4, 3, 3, 4]);
         let my_check_digit: i8 = 9;
 
         UPCCode {
@@ -160,6 +177,8 @@ mod tests {
 
     /// Checks if an invalid code returns the right value when using the
     /// UPCCode.check_code() method.
+    /// 
+    /// **NOTE: Will be using an invalid UPC-E code for this test.**
     #[test]
     fn upc_code_invalidcheck() {
         let my_code: Vec<i8> = vec![0, 3, 6, 7, 4, 3, 3, 4];
