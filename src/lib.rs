@@ -61,21 +61,40 @@ impl UPCCode {
     /// Validates that all data in the `UPCCode` is 1-char in len (0-9)
     /// instead of the -255 to 255 of an i8
     fn validate_nums(&self) -> bool {
-        for code in self.code {
-            if !is_1_digit(*code) {
-                return false;
-            }
+        match self.code {
+            UPCCodeType::UPCA(x) => {
+                if !self.check_slice_validity(&x[..]) {
+                    return false;
+                }
+            },
+            UPCCodeType::UPCE(x) => {
+                if !self.check_slice_validity(&x[..]) {
+                    return false;
+                }
+            },
         }
 
         is_1_digit(self.check_digit)
     }
 
+    /// Checks an individual slice's validity using the `is_1_digit()` function
+    /// and returns a bool if it is valid or not.
+    fn check_slice_validity(&self, given_slice: &[i8]) -> bool {
+        for code in given_slice {
+            if !is_1_digit(*code) {
+                return false;
+            }
+        }
+
+        true
+    }
+
     /// Adds odd and even numbers (using %) to a 2-len
     /// u8 tuple `(even, odd)` respectivly
-    fn add_even_odd_total(&self) -> (u8, u8) {
+    fn mod_check_slice(&self, codes: &[i8]) -> (u8, u8) {
         let mut result: (u8, u8) = (0, 0);
-
-        for code in self.code {
+        
+        for code in codes {
             if code % 2 == 0 {
                 result.0 += *code as u8;
             } else {
@@ -84,6 +103,17 @@ impl UPCCode {
         }
 
         result
+    }
+
+    /// Frontend function for `self.mod_check_slice()`. Matches enums and
+    /// preforms calculations using said function.UPCCodeType
+    /// 
+    /// Returns a `(even: u8, odd: u8)` tuple.
+    fn add_even_odd_total(&self) -> (u8, u8) {
+        match self.code {
+            UPCCodeType::UPCA(x) => return self.mod_check_slice(&x[..]),
+            UPCCodeType::UPCE(x) => return self.mod_check_slice(&x[..]),
+        }
     }
 
     /// Frontend function for checking with given `check_code` for the
