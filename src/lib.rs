@@ -48,8 +48,8 @@ pub enum UPCStandard {
 /// ```rust
 /// extern crate upc_checker;
 ///
-/// let my_code_vector = upc_checker::UPCStandard::UPCE(
-///     [0, 1, 2, 3, 4, 5, 6]
+/// let my_code_vector = upc_checker::UPCStandard::UPCA(
+///     [0,1,2,3,4,5,6,7,8,9,0]
 /// ); // NOTE digits should be 0-9.
 /// let my_check_digit: i8 = 2; // NOTE check digit should be 0-9
 ///
