@@ -4,7 +4,7 @@ extern crate upc_checker;
 /// [UPC-A](https://en.wikipedia.org/wiki/Universal_Product_Code#Encoding)
 #[test]
 fn valid_upc_a() {
-    let my_upc = upc_checker::UPCStandard::UPCA([9,9,9,9,9,9,9,9,9,9,9,9]);
+    let my_upc = upc_checker::UPCStandard::UPCA([7,9,6,0,3,0,1,1,4,9,7]);
     let my_check_code: i8 = 7;
 
     let my_upc_struct = upc_checker::UPC {
@@ -19,7 +19,7 @@ fn valid_upc_a() {
 /// [UPC-E](https://en.wikipedia.org/wiki/Universal_Product_Code#UPC-E)
 #[test]
 fn valid_upc_e() {
-    let my_upc = upc_checker::UPCStandard::UPCE([9,9,9,9,9,9,9,9]);
+    let my_upc = upc_checker::UPCStandard::UPCE([9,9,9,9,9,9,9]);
     let my_check_code: i8 = 7;
 
     let my_upc_struct = upc_checker::UPC {

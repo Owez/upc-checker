@@ -29,8 +29,8 @@ pub enum UPCError {
 /// - [UPC-E](https://en.wikipedia.org/wiki/Universal_Product_Code#UPC-E)
 #[derive(Debug, PartialEq, Clone)]
 pub enum UPCStandard {
-    UPCA([i8; 12]),
-    UPCE([i8; 8]),
+    UPCA([i8; 11]),
+    UPCE([i8; 7]),
 }
 
 /// Main UPC structure containing the base UPC code alonside it's
@@ -90,6 +90,7 @@ impl UPC {
         };
 
         let (even_nums, odd_nums) = self.split_upc_even_odd();
+
         let total: u16 = ((odd_nums * 3) + even_nums) % 10;
 
         if (total == 0 && self.check_digit == 0) || (10 - total == self.check_digit as u16) {

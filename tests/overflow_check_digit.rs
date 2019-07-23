@@ -4,7 +4,7 @@ extern crate upc_checker;
 /// returned for overflowing check digits
 #[test]
 fn overflow_check_digit() {
-    let my_upc = upc_checker::UPCStandard::UPCA([9,9,9,9,9,9,9,9,9,9,9,9]);
+    let my_upc = upc_checker::UPCStandard::UPCA([9,9,9,9,9,9,9,9,9,9,9]);
     let my_check_code: i8 = 70; // `70` should error
 
     let my_upc_struct = upc_checker::UPC {
