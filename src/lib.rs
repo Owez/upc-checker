@@ -73,6 +73,13 @@ pub struct UPCCode {
 }
 
 impl UPCCode {
+    /// The main frontend method for the `UPCCode` structure. This method uses
+    /// data from the super `UPCCode` struct and returns a Result enum with
+    /// either a `bool` (IF the check digit is valid) or an instance of the
+    /// `UPCCodeError` enum.
+    ///
+    /// **NOTE: For more documentation & examples, please view the `UPCCode`
+    /// documentation directly.**
     pub fn check_upc(&self) -> Result<bool, UPCCodeError> {
         match self.validate_upc_overflow() {
             Err(x) => return Err(x),
@@ -89,6 +96,11 @@ impl UPCCode {
         Ok(false)
     }
 
+    /// Converts any defined standards given in `UPCCodeStandard` to an i8
+    /// slice and returns it.
+    ///
+    /// **TODO: Make this automatically implament new standard from the
+    /// afformentioned enum instead of matching all values.**
     fn get_upc_slice(&self) -> &[i8] {
         match &self.upc {
             UPCCodeStandard::UPCA(x) => &x[..],
@@ -96,6 +108,9 @@ impl UPCCode {
         }
     }
 
+    /// Validates that there has been no overflow of the `UPCCode` structure
+    /// by hooking onto the `is_1_digit` helper function. This is the main
+    /// source of the uses of `UPCCodeError`.
     fn validate_upc_overflow(&self) -> Result<(), UPCCodeError> {
         for upc_code in self.get_upc_slice() {
             if !is_1_digit(*upc_code) {
@@ -108,6 +123,9 @@ impl UPCCode {
             false => Err(UPCCodeError::CheckDigitOverflow),
         }
     }
+
+    /// Splits the UPC codes depending if they are odd or even (defined by a
+    /// mod) into one of 2 values in a tuple of `([EVEN] u16, [ODD] u16)`.
     fn split_upc_even_odd(&self) -> (u16, u16) {
         let mut even_odd: (u16, u16) = (0, 0);
 
@@ -123,6 +141,7 @@ impl UPCCode {
     }
 }
 
+/// Checks if a given i8 is 1 digit/character (0-9) wide
 fn is_1_digit(digit: i8) -> bool {
     digit > 0 && digit < 9
 }
