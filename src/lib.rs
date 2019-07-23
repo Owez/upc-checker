@@ -181,7 +181,7 @@ mod tests {
     /// **NOTE: Will be using an invalid UPC-E code for this test.**
     #[test]
     fn upc_code_invalidcheck() {
-        let my_code: Vec<i8> = vec![0, 3, 6, 7, 4, 3, 3, 4];
+        let my_code = UPCCodeType::UPCE([0, 3, 6, 7, 4, 9, 9, 4]);
         let my_check_digit: i8 = 9;
 
         let my_upc_code_struct = UPCCode {
@@ -194,10 +194,12 @@ mod tests {
 
     /// Checks if a valid code is returning the right value when using the
     /// UPCCode.check_code() method.
+    /// 
+    /// **NOTE: This test is essentially an extention of the UPC-E test**
     #[test]
     fn upc_code_validcheck() {
-        let my_code: Vec<i8> = vec![0, 3, 6, 0, 0, 0, 2, 4, 1, 4, 5];
-        let my_check_digit: i8 = 7;
+        let my_code = UPCCodeType::UPCE([0, 3, 6, 7, 4, 3, 3, 4]);
+        let my_check_digit: i8 = 9;
 
         let my_upc_code_struct = UPCCode {
             code: my_code,
@@ -211,7 +213,7 @@ mod tests {
     /// an overflowing value (in this case any other number then 0-9).
     #[test]
     fn upc_code_overflow_error() -> Result<(), ()> {
-        let my_code: Vec<i8> = vec![0, 1, 2, 3, 56]; // 56 should be the error
+        let my_code = UPCCodeType::UPCE([0, 3, 6, 7, 4, 30, 3, 4]); // 30 should error
         let my_check_digit: i8 = 7; // Just random, it will fail anyway
 
         let my_upc_code_struct = UPCCode {
