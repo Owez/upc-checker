@@ -26,6 +26,7 @@ pub enum UPCCodeError {
 ///
 /// - [UPC-A](https://en.wikipedia.org/wiki/Universal_Product_Code#Encoding)
 /// - [UPC-E](https://en.wikipedia.org/wiki/Universal_Product_Code#UPC-E)
+#[derive(Debug, PartialEq, Clone)]
 pub enum UPCCodeStandard {
     UPCA([i8; 12]),
     UPCE([i8; 8]),
@@ -67,6 +68,7 @@ pub enum UPCCodeStandard {
 ///     },
 /// };
 /// ```
+#[derive(Debug, PartialEq, Clone)]
 pub struct UPCCode {
     pub upc: UPCCodeStandard,
     pub check_digit: i8,
