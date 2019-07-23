@@ -4,25 +4,27 @@
 
 ### About
 
-`upc-checker` is a small Rust Crate for quickly checking a UPC code compared to a check digit. Some more of the in-depth of this process can be found [here](). This is my first Rust Crate so apologies if it isn't memory efficiant as it could be (though it uses only `i8`, `i8` and `u16` for data ints).
+`upc-checker` is a small Rust Crate for quickly checking a UPC code compared to a check digit. It currently only supports the popular `UPC-A` format and is a `no_std` crate.
 
 ### An Example
 
-Here is a small example of `upc-checker` in action:
+Here is a small, working example of `upc-checker` in action:
 
 ```rust
 extern crate upc_checker;
 
 fn main() {
-    let my_code: Vec<i8> = vec![0, 3, 6, 0, 0, 0, 2, 4, 1, 4, 5]; // This is the main UPC code
-    let my_check_digit: i8 = 7; // This is the UPC check digit
+    let my_upc = upc_checker::UPCStandard::UPCA(
+        [0, 3, 6, 0, 0, 0, 2, 4, 1, 4, 5]
+    );
+    let my_check_code: i8 = 7;
 
-    let my_upc_code_struct = UPCCode { // Creating a structure with the UPC components inside
-        code: my_code,
-        check_digit: my_check_digit,
+    let my_upc_struct = upc_checker::UPC {
+        upc: my_upc,
+        check_digit: my_check_code,
     };
 
-    match my_upc_code_struct.check_code() { // `my_upc_code_struct.check_code()` returns `Result<bool, std::io::Error>`.
+    match my_upc_code_struct.check_code() { // `my_upc_code_struct.check_code()` returns `Result<bool, UPCError>`.
         Ok(x) => (), // `x` is a bool
         Err(_) => (), // Deal as you like
     }
