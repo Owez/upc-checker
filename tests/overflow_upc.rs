@@ -4,7 +4,7 @@ extern crate upc_checker;
 /// [UPC-A](https://en.wikipedia.org/wiki/Universal_Product_Code#Encoding)
 #[test]
 fn overflow_upc_a() {
-    let my_upc = upc_checker::UPCStandard::UPCA([9,9,9,9,9,12,9,9,9,9,9]); // `12` should error
+    let my_upc = upc_checker::UPCStandard::UPCA([9, 9, 9, 9, 9, 12, 9, 9, 9, 9, 9]); // `12` should error
     let my_check_code: i8 = 7;
 
     let my_upc_struct = upc_checker::UPC {
@@ -12,5 +12,8 @@ fn overflow_upc_a() {
         check_digit: my_check_code,
     };
 
-    assert_eq!(Err(upc_checker::UPCError::UPCOverflow), my_upc_struct.check_upc());
+    assert_eq!(
+        Err(upc_checker::UPCError::UPCOverflow),
+        my_upc_struct.check_upc()
+    );
 }

@@ -4,7 +4,7 @@ extern crate upc_checker;
 /// [UPC-A](https://en.wikipedia.org/wiki/Universal_Product_Code#Encoding)
 #[test]
 fn valid_upc_a() {
-    let my_upc = upc_checker::UPCStandard::UPCA([0,3,6,0,0,0,2,4,1,4,5]);
+    let my_upc = upc_checker::UPCStandard::UPCA([0, 3, 6, 0, 0, 0, 2, 4, 1, 4, 5]);
     let my_check_code: i8 = 7;
 
     let my_upc_struct = upc_checker::UPC {

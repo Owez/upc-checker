@@ -120,9 +120,10 @@ impl UPC {
             }
         }
 
-        match is_1_digit(self.check_digit) {
-            true => Ok(()),
-            false => Err(UPCError::CheckDigitOverflow),
+        if is_1_digit(self.check_digit) {
+            Ok(())
+        } else {
+            Err(UPCError::CheckDigitOverflow)
         }
     }
 
