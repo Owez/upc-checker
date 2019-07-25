@@ -18,15 +18,16 @@ pub enum UPCError {
     CheckDigitOverflow,
 }
 
-/// The impamentations on the widely-used UPC code standards as simple i8
-/// arrays with a defined length. These arrays should **only** have ints that
-/// are 0-9 (1 digit) otherwise `UPC.upc_check()` will throw an error
-/// defined as `UPCError::UPCOverflow`.
+/// The impamentations on the widely-used UPC code standards are simple `i8`
+/// arrays with a defined length.
+/// 
+/// **NOTE: These arrays should **only** have int's that are 0-9 (1 digit)
+/// otherwise `UPC.upc_check()` will throw an error defined as
+/// `UPCError::UPCOverflow`.**
 ///
-/// # Standards implamented
+/// # Standards Implamented
 ///
 /// - [UPC-A](https://en.wikipedia.org/wiki/Universal_Product_Code#Encoding)
-/// - [UPC-E](https://en.wikipedia.org/wiki/Universal_Product_Code#UPC-E)
 #[derive(Debug, PartialEq, Clone)]
 pub enum UPCStandard {
     UPCA([i8; 11]),

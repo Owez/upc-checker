@@ -33,4 +33,4 @@ fn main() {
 
 ## Documentation
 
-You can find the documentation of this crate on a [handy doc.rs page](https://docs.rs/upc-checker/0.1.1/upc_checker/).
+You can find the documentation of this crate on a [handy doc.rs page](https://docs.rs/upc-checker/).
