@@ -84,10 +84,7 @@ impl UPC {
     /// **NOTE: For more documentation & examples, please view the `UPC`
     /// documentation directly.**
     pub fn check_upc(&self) -> Result<bool, UPCError> {
-        match self.validate_upc_overflow() {
-            Err(x) => return Err(x),
-            Ok(_) => (),
-        };
+        self.validate_upc_overflow()?;
 
         let (even_nums, odd_nums) = self.split_upc_even_odd();
 
@@ -116,16 +113,12 @@ impl UPC {
     /// source of the uses of `UPCError`.
     fn validate_upc_overflow(&self) -> Result<(), UPCError> {
         for upc_code in self.get_upc_slice() {
-            if !is_1_digit(*upc_code) {
-                return Err(UPCError::UPCOverflow);
-            }
+            is_1_digit(*upc_code)?;
         }
 
-        if is_1_digit(self.check_digit) {
-            Ok(())
-        } else {
-            Err(UPCError::CheckDigitOverflow)
-        }
+        is_1_digit(self.check_digit)?;
+
+        Ok(())
     }
 
     /// Splits the UPC codes depending if they are odd or even (defined by a
@@ -146,6 +139,10 @@ impl UPC {
 }
 
 /// Checks if a given i8 is 1 digit/character (0-9) wide
-fn is_1_digit(digit: i8) -> bool {
-    !(digit < 0 || digit > 9)
+fn is_1_digit(digit: i8) -> Result<(), UPCError> {
+    if digit < 0 || digit > 9 {
+        return Err(UPCError::CheckDigitOverflow)
+    }
+
+    Ok(())
 }

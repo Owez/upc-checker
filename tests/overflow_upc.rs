@@ -13,7 +13,7 @@ fn overflow_upc_a() {
     };
 
     assert_eq!(
-        Err(upc_checker::UPCError::UPCOverflow),
+        Err(upc_checker::UPCError::CheckDigitOverflow),
         my_upc_struct.check_upc()
     );
 }
