@@ -20,7 +20,7 @@ pub enum UPCError {
 
 /// The impamentations on the widely-used UPC code standards are simple `i8`
 /// arrays with a defined length.
-/// 
+///
 /// **NOTE: These arrays should **only** have int's that are 0-9 (1 digit)
 /// otherwise `UPC.upc_check()` will throw an error defined as
 /// `UPCError::UPCOverflow`.**
@@ -92,9 +92,9 @@ impl UPC {
 
         if (total == 0 && self.check_digit == 0) || (10 - total == self.check_digit as u16) {
             return Ok(true);
+        } else {
+            return Ok(false);
         }
-
-        Ok(false)
     }
 
     /// Converts any defined standards given in `UPCStandard` to an i8
@@ -116,9 +116,7 @@ impl UPC {
             is_1_digit(*upc_code)?;
         }
 
-        is_1_digit(self.check_digit)?;
-
-        Ok(())
+        is_1_digit(self.check_digit)
     }
 
     /// Splits the UPC codes depending if they are odd or even (defined by a
@@ -141,8 +139,8 @@ impl UPC {
 /// Checks if a given i8 is 1 digit/character (0-9) wide
 fn is_1_digit(digit: i8) -> Result<(), UPCError> {
     if digit < 0 || digit > 9 {
-        return Err(UPCError::CheckDigitOverflow)
+        Err(UPCError::CheckDigitOverflow)
+    } else {
+        Ok(())
     }
-
-    Ok(())
 }
