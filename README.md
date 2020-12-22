@@ -11,24 +11,27 @@
 Here is a small, working example of `upc-checker` in action:
 
 ```rust
-extern crate upc_checker;
+use upc_checker::{Standard, Upc, UpcError};
 
-fn main() {
-    let my_upc = upc_checker::UPCStandard::UPCA(
-        [0, 3, 6, 0, 0, 0, 2, 4, 1, 4, 5]
-    );
-    let my_check_code: i8 = 7;
+let my_code_vector = Standard::UpcA(
+    [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0]
+);
+let my_check_digit: i8 = 2;
 
-    let my_upc_struct = upc_checker::UPC {
-        upc: my_upc,
-        check_digit: my_check_code,
-    };
+let code = Upc {
+    upc: my_code_vector,
+    check_digit: my_check_digit,
+};
 
-    match my_upc_code_struct.check_code() { // `my_upc_code_struct.check_code()` returns `Result<bool, UPCError>`.
-        Ok(x) => (), // `x` is a bool
-        Err(_) => (), // Deal as you like
-    }
-}
+match code.check() {
+    Ok(x) => println!("Is the code valid?: {}", x),
+    Err(UpcError::UpcOverflow) => {
+        eprintln!("UPC code overflow! Please use only 0-9!");
+    },
+    Err(UpcError::CheckDigitOverflow) => {
+        eprintln!("UPC check digit overflow! Please use only 0-9!");
+    },
+};
 ```
 
 ## Documentation
